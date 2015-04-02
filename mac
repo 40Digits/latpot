@@ -114,11 +114,11 @@ brew unlink openssl && brew link openssl --force
 brew_install_or_upgrade 'libyaml'
 
 #configure apache
-sed -i '' '/^#.*mod_vhost_alias.so/ s/^#//' httpd.conf
-sed -i '' '/^#.*mod_rewrite.so/ s/^#//' httpd.conf
-sed -i '' '/^#.*libphp5.so/ s/^#//' httpd.conf
-sed -i '' '/^#.*/private/etc/apache2/extra/http-vhosts.conf/ s/^#//' httpd.conf
-sed -i '' '/DirectoryIndex index.html/ s//DirectoryIndex index.html index.php/' httpd.conf
+sed -i '' '/^#.*mod_vhost_alias.so/ s/^#//' /private/etc/apache2/httpd.conf
+sed -i '' '/^#.*mod_rewrite.so/ s/^#//' /private/etc/apache2/httpd.conf
+sed -i '' '/^#.*libphp5.so/ s/^#//' /private/etc/apache2/httpd.conf
+sed -i '' '/^#.*/private/etc/apache2/extra/http-vhosts.conf/ s/^#//' /private/etc/apache2/httpd.conf
+sed -i '' '/DirectoryIndex index.html/ s//DirectoryIndex index.html index.php/' /private/etc/apache2/httpd.conf
 sudo apachectl restart
 
 #install and configure mysql
