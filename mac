@@ -180,7 +180,7 @@ sudo apachectl restart
 
 #install and configure mysql
 brew_install_or_upgrade 'mysql'
-mysql.server restart
+mysql.server start
 mysql_secure_installation
 mysql.server restart
 
