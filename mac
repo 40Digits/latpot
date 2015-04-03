@@ -128,6 +128,17 @@ fetch_xz() {
     && install $dir
 }
 
+fetch_pkg_config() {
+  local dir=$1
+  echo "... installing $1"
+ cd $dir \
+   && ./configure --with-internal-glib --disable-dependency-tracking --prefix=$PREFIX \
+   && make \
+   && make install \
+   && echo "... removing $dir" \
+   && cd .. && rm -fr $dir
+}
+
 install() {
   local dir=$1
   echo "... installing $1"
@@ -180,7 +191,7 @@ mysql.server restart
 echo "... installing to $PREFIX"
 require curl
 require tar
-test `which pkg-config` || fetch $PKG_CONFIG
+test `which pkg-config` || fetch_pkg_config $PKG_CONFIG
 require 'pkg-config'
 fetch $LIBPNG
 fetch $GIF_LIB
