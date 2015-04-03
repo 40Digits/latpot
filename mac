@@ -104,14 +104,8 @@ fancy_echo "Updating Homebrew formulas ..."
 brew update
 
 brew_install_or_upgrade 'git'
-brew_install_or_upgrade 'postgres'
-brew_launchctl_restart 'postgresql'
-brew_install_or_upgrade 'vim'
-brew_install_or_upgrade 'imagemagick'
-
 brew_install_or_upgrade 'openssl'
 brew unlink openssl && brew link openssl --force
-brew_install_or_upgrade 'libyaml'
 
 #configure apache
 sudo sed -i '' '/^#.*mod_vhost_alias.so/ s/^#//' /private/etc/apache2/httpd.conf
