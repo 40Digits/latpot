@@ -129,9 +129,17 @@ fetch_xz() {
 }
 
 fetch_pkg_config() {
-  local dir=$1
+  local tarball=`basename $1`
+  echo "... downloading $tarball"
+  local dir=`basename $tarball .tar.gz`
+  curl -# -L $1 -o $tarball \
+    && echo "... unpacking" \
+    && tar -zxf $tarball \
+    && echo "... removing tarball" \
+    && rm -fr $tarball
+
   echo "... installing $1"
- cd $dir \
+  cd $dir \
    && ./configure --with-internal-glib --disable-dependency-tracking --prefix=$PREFIX \
    && make \
    && make install \
