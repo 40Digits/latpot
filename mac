@@ -85,79 +85,6 @@ brew_launchctl_restart() {
   launchctl load "$HOME/Library/LaunchAgents/$plist" >/dev/null
 }
 
-#cairo config
-PKG_CONFIG="http://pkgconfig.freedesktop.org/releases/pkg-config-0.28.tar.gz"
-PIXMAN="http://www.cairographics.org/releases/pixman-0.32.4.tar.gz"
-CAIRO="http://cairographics.org/releases/cairo-1.12.16.tar.xz"
-FREETYPE="http://download.savannah.gnu.org/releases/freetype/freetype-2.4.10.tar.gz"
-LIBPNG="http://downloads.sourceforge.net/project/libpng/libpng16/1.6.10/libpng-1.6.10.tar.gz"
-GIF_LIB="https://downloads.sourceforge.net/project/giflib/giflib-4.x/giflib-4.1.6/giflib-4.1.6.tar.gz"
-PREFIX=${1-/usr/local}
-
-require() {
-  echo "... checking for $1"
-  if test `which $1`; then
-    echo "... found"
-  else
-    echo "... not found"
-    exit 1
-  fi
-}
-
-fetch() {
-  local tarball=`basename $1`
-  echo "... downloading $tarball"
-  local dir=`basename $tarball .tar.gz`
-  curl -# -L $1 -o $tarball \
-    && echo "... unpacking" \
-    && tar -zxf $tarball \
-    && echo "... removing tarball" \
-    && rm -fr $tarball \
-    && install $dir
-}
-
-fetch_xz() {
-  local tarball=`basename $1`
-  echo "... downloading $tarball"
-  local dir=`basename $tarball .tar.xz`
-  curl -# -L $1 -o $tarball \
-    && echo "... unpacking" \
-    && tar -xJf $tarball \
-    && echo "... removing tarball" \
-    && rm -fr $tarball \
-    && install $dir
-}
-
-fetch_pkg_config() {
-  local tarball=`basename $1`
-  echo "... downloading $tarball"
-  local dir=`basename $tarball .tar.gz`
-  curl -# -L $1 -o $tarball \
-    && echo "... unpacking" \
-    && tar -zxf $tarball \
-    && echo "... removing tarball" \
-    && rm -fr $tarball
-
-  echo "... installing $1"
-  cd $dir \
-   && ./configure --with-internal-glib --disable-dependency-tracking --prefix=$PREFIX \
-   && make \
-   && make install \
-   && echo "... removing $dir" \
-   && cd .. && rm -fr $dir
-}
-
-install() {
-  local dir=$1
-  echo "... installing $1"
- cd $dir \
-   && ./configure --disable-dependency-tracking --prefix=$PREFIX \
-   && make \
-   && make install \
-   && echo "... removing $dir" \
-   && cd .. && rm -fr $dir
-}
-
 if ! command -v brew >/dev/null; then
   fancy_echo "Installing Homebrew ..."
     curl -fsS \
@@ -177,6 +104,7 @@ fancy_echo "Updating Homebrew formulas ..."
 brew update
 
 brew_install_or_upgrade 'git'
+brew_install_or_upgrade 'cairo'
 
 #configure apache
 sudo sed -i '' '/^#.*mod_vhost_alias.so/ s/^#//' '/private/etc/apache2/httpd.conf'
@@ -191,19 +119,6 @@ brew_install_or_upgrade 'mysql'
 mysql.server start
 mysql_secure_installation
 mysql.server restart
-
-
-#install dependencies for cairo
-echo "... installing to $PREFIX"
-require curl
-require tar
-test `which pkg-config` || fetch_pkg_config $PKG_CONFIG
-require 'pkg-config'
-fetch $LIBPNG
-fetch $GIF_LIB
-fetch $FREETYPE
-fetch $PIXMAN
-fetch_xz $CAIRO
 
 if [ -f "$HOME/.laptop.local" ]; then
   . "$HOME/.laptop.local"
