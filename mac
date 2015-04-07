@@ -143,6 +143,7 @@ brew tap caskroom/cask
 brew_install_or_upgrade 'brew-cask'
 brew_cask_install_or_upgrade 'xquartz'
 brew_install_or_upgrade 'cairo'
+brew_install_or_upgrade 'node'
 
 #configure apache
 sudo sed -i '' '/^#.*mod_vhost_alias.so/ s/^#//' '/private/etc/apache2/httpd.conf'
