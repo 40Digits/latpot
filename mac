@@ -156,8 +156,6 @@ sudo apachectl restart
 #install and configure mysql
 brew_install_or_upgrade 'mysql'
 mysql.server start
-mysql_secure_installation
-mysql.server restart
 
 if [ -f "$HOME/.laptop.local" ]; then
   . "$HOME/.laptop.local"
