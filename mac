@@ -146,13 +146,23 @@ brew_install_or_upgrade 'cairo'
 brew_install_or_upgrade 'node'
 
 #configure apache
-sudo sed -i '' '/^#.*mod_vhost_alias.so/ s/^#//' '/private/etc/apache2/httpd.conf'
-sudo sed -i '' '/^#.*mod_rewrite.so/ s/^#//' '/private/etc/apache2/httpd.conf'
-sudo sed -i '' '/^#.*libphp5.so/ s/^#//' '/private/etc/apache2/httpd.conf'
-sudo sed -i '' '/^#.*\/private\/etc\/apache2\/extra\/http-vhosts.conf/ s/^#//' '/private/etc/apache2/httpd.conf'
-sudo sed -i '' '/DirectoryIndex index.html/ s//DirectoryIndex index.html index.php/' '/private/etc/apache2/httpd.conf'
-sudo sed -i '' "/User _www/ s//User $(whoami)/" '/private/etc/apache2/httpd.conf'
-sudo sed -i '' "/Group _www/ s//Group staff/" '/private/etc/apache2/httpd.conf'
+httpd_conf="/private/etc/apache2/httpd.conf";
+username=`whoami`;
+
+sudo sed -i '' '/^#.*mod_vhost_alias.so/ s/^#//' $httpd_conf
+sudo sed -i '' '/^#.*mod_rewrite.so/ s/^#//' $httpd_conf
+sudo sed -i '' '/^#.*libphp5.so/ s/^#//' $httpd_conf
+sudo sed -i '' '/^#.*\/private\/etc\/apache2\/extra\/http-vhosts.conf/ s/^#//' $httpd_conf
+sudo sed -i '' '/DirectoryIndex index.html/ s//DirectoryIndex index.html index.php/' $httpd_conf
+sudo sed -i '' "/User _www/ s//User $username/" $httpd_conf
+sudo sed -i '' "/Group _www/ s//Group staff/" $httpd_conf 
+
+if ! grep -qe "^<Directory /Users/$username>$" $httpd_conf; then
+  echo "<Directory /Users/$username>" >> $httpd_conf
+  echo "  AllowOverride all" >> $httpd_conf
+  echo "  Require all granted" >> $httpd_conf
+  echo "</Directory>" >> $httpd_conf
+fi
 sudo apachectl restart
 
 #install and configure mysql
