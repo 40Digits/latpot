@@ -158,10 +158,10 @@ sudo sed -i '' "/User _www/ s//User $username/" $httpd_conf
 sudo sed -i '' "/Group _www/ s//Group staff/" $httpd_conf 
 
 if ! grep -qe "^<Directory /Users/$username>$" $httpd_conf; then
-  sudo echo "<Directory /Users/$username>" >> $httpd_conf
-  sudo echo "  AllowOverride all" >> $httpd_conf
-  sudo echo "  Require all granted" >> $httpd_conf
-  sudo echo "</Directory>" >> $httpd_conf
+  sudo sh -c "echo \"<Directory /Users/$username>\" >> $httpd_conf"
+  sudo sh -c "echo '  AllowOverride all' >> $httpd_conf"
+  sudo sh -c "echo '  Require all granted' >> $httpd_conf"
+  sudo sh -c "echo '</Directory>' >> $httpd_conf"
 fi
 sudo apachectl restart
 
