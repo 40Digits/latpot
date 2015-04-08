@@ -169,6 +169,6 @@ sudo apachectl restart
 brew_install_or_upgrade 'mysql'
 mysql.server start
 
-if [ -f "$HOME/.laptop.local" ]; then
-  . "$HOME/.laptop.local"
+if [ -f "$HOME/.latpot.local" ]; then
+  . "$HOME/.latpot.local"
 fi
