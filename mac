@@ -151,6 +151,8 @@ sudo sed -i '' '/^#.*mod_rewrite.so/ s/^#//' '/private/etc/apache2/httpd.conf'
 sudo sed -i '' '/^#.*libphp5.so/ s/^#//' '/private/etc/apache2/httpd.conf'
 sudo sed -i '' '/^#.*\/private\/etc\/apache2\/extra\/http-vhosts.conf/ s/^#//' '/private/etc/apache2/httpd.conf'
 sudo sed -i '' '/DirectoryIndex index.html/ s//DirectoryIndex index.html index.php/' '/private/etc/apache2/httpd.conf'
+sudo sed -i '' "/User _www/ s//User $(whoami)/" '/private/etc/apache2/httpd.conf'
+sudo sed -i '' "/Group _www/ s//Group staff/" '/private/etc/apache2/httpd.conf'
 sudo apachectl restart
 
 #install and configure mysql
