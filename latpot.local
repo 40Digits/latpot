@@ -1,0 +1,7 @@
+#!/bin/sh
+
+brew_cask_install_or_upgrade 'iterm2'
+brew_cask_install_or_upgrade 'sublime-text'
+brew_cask_install_or_upgrade 'sequel-pro'
+brew_cask_install_or_upgrade 'virtualbox'
+brew_cask_install_or_upgrade 'cyberduck'
