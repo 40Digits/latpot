@@ -5,3 +5,5 @@ brew_cask_install_or_upgrade 'sublime-text'
 brew_cask_install_or_upgrade 'sequel-pro'
 brew_cask_install_or_upgrade 'virtualbox'
 brew_cask_install_or_upgrade 'cyberduck'
+
+ln -nfs "/Users/$(whoami)/Applications" "/Applications/Cask"
