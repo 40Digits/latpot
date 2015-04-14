@@ -145,6 +145,11 @@ brew_cask_install_or_upgrade 'xquartz'
 brew_install_or_upgrade 'cairo'
 brew_install_or_upgrade 'node'
 
+#ensure system apache isn't running
+sudo launchctl unload /System/Library/LaunchDaemons/org.apache.httpd.plist 2>/dev/null
+brew tap homebrew/dupes
+brew_install_or_upgrade 'httpd24' --with-brewed-openssl
+
 #configure apache
 httpd_conf="/private/etc/apache2/httpd.conf";
 username=`whoami`;
